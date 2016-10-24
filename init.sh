@@ -21,6 +21,7 @@ echo "-----------------------------------------------------------------"
 echo "Initializing smartsearch-demo"
 rm -rf smartsearch-demo/node_modules                        || fail
 rm -f  smartsearch-demo/app/*.js                            || fail
+rm -f  smartsearch-demo/app/*.map                           || fail
 cp -r quickstart/node_modules smartsearch-demo/node_modules || fail
 
 echo "-----------------------------------------------------------------"

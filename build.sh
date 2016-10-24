@@ -14,4 +14,9 @@ echo "Building smartsearch-demo"
 ( cd smartsearch-demo && tsc ) || fail
 
 echo "-----------------------------------------------------------------"
+echo "Building data"
+rm -f data/documents.json            || fail
+( cd data && python3 import_raw.py ) || fail
+
+echo "-----------------------------------------------------------------"
 echo "Done."

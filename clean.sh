@@ -17,6 +17,11 @@ echo "-----------------------------------------------------------------"
 echo "Cleaning smartsearch-demo"
 rm -rf smartsearch-demo/node_modules || fail
 rm -f  smartsearch-demo/app/*.js     || fail
+rm -f  smartsearch-demo/app/*.map    || fail
+
+echo "-----------------------------------------------------------------"
+echo "Cleaning data"
+rm -f data/documents.json            || fail
 
 echo "-----------------------------------------------------------------"
 echo "Done."
