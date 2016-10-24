@@ -1,8 +1,7 @@
 /.idea/
+/quickstart/
 /smartsearch/
 /smartsearch-demo.iml
 
 .ipynb_checkpoints/
-
-
-
+node_modules/
