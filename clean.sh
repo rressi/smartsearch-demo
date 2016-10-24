@@ -9,9 +9,9 @@ echo "-----------------------------------------------------------------"
 echo "Cleaning smartsearch"
 rm -rf smartsearch/ || fail
 
-echo "-----------------------------------------------------------------"
-echo "Cleaning quickstart"
-rm -rf quickstart || fail
+# echo "-----------------------------------------------------------------"
+# echo "Cleaning quickstart"
+# rm -rf quickstart || fail
 
 echo "-----------------------------------------------------------------"
 echo "Cleaning smartsearch-demo"
