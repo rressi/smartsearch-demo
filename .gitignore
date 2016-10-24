@@ -5,3 +5,6 @@
 
 .ipynb_checkpoints/
 node_modules/
+
+/smartsearch-demo/app/*.js
+/smartsearch-demo/app/*.js.map

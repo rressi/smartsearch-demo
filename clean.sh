@@ -16,6 +16,7 @@ rm -rf quickstart || fail
 echo "-----------------------------------------------------------------"
 echo "Cleaning smartsearch-demo"
 rm -rf smartsearch-demo/node_modules || fail
+rm -f  smartsearch-demo/app/*.js     || fail
 
 echo "-----------------------------------------------------------------"
 echo "Done."
