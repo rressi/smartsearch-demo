@@ -16,6 +16,11 @@ export class SearchService {
 
         let params: URLSearchParams = new URLSearchParams();
         params.set('q', query);
+        /*
+        if (limit >= 0) {
+            params.set('l', limit.toString());
+        }
+        */
 
         let http_query = '/search?' + params.toString()
         // console.log("SearchService.search: " + http_query)
@@ -31,7 +36,7 @@ export class SearchService {
         if (body == null) {
             return []
         }
-        console.log("SearchService.extractPostings: " + body.toString())
+        // console.log("SearchService.extractPostings: " + body.toString())
 
         return body
     }
@@ -39,47 +44,34 @@ export class SearchService {
     docs(ids: number[]): Observable<Document[]> {
 
         let params: URLSearchParams = new URLSearchParams();
-        params.set('ids', ids.toString());
-        let http_query = '/docs?' + params.toString()
-        console.log("SearchService.docs: " + http_query)
+        params.set('ids', ids.join(' '));
+        let http_query = '/docs?' + params.toString();
+        // console.log("SearchService.docs: " + http_query);
 
         return this.http.get(http_query)
-            .map(this.extractDocuments())
+            .map(this.extractDocuments)
             .catch(this.handleError);
     }
 
-    private extractDocuments() {
+    private extractDocuments(res: Response): Document[] {
 
-        var text = ""
-        return function (res: Response): Document[] {
+        // console.log("SearchService.extractDocuments: [" + res.text() + "]")
+        // console.log("SearchService.extractDocuments: [" + res.ok + "]")
+        // console.log("SearchService.extractDocuments: [" + res.status + "]")
 
-            console.log("SearchService.extractDocuments: [" + res.text() + "]")
-            console.log("SearchService.extractDocuments: [" + res.ok + "]")
-            console.log("SearchService.extractDocuments: [" + res.status + "]")
-
-            text += res.text()
-
-
-            /*
-            for (let line of res.text().split("\n")) {
-                console.log("SearchService.extractDocuments: [" + line + "]")
+        var documents: Document[] = [];
+        for (let line of res.text().split("\n")) {
+            if (line.length == 0) {
+                continue
             }
-            */
 
-            /*
-             var result = new Document[]()
-
-             var body = res.json();
-             if (body == null) {
-             return []
-             }
-             console.log("SearchService.extractPostings: " + body.toString())
-
-             return body
-             */
-            return []
+            // console.log("SearchService.extractDocuments: [" + line + "]")
+            let data = JSON.parse(line)
+            // console.log("SearchService.extractDocuments: [" + data.toString() + "]")
+            documents.push(new Document(data))
         }
 
+        return documents
     }
 
     private handleError (error: Response | any) {

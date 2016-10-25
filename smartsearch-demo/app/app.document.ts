@@ -1,5 +1,5 @@
 export class Document {
 
-    constructor(data: any) { }
+    constructor(public data: any) { }
 
 }
