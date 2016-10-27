@@ -4,7 +4,6 @@ import './rxjs-operators';
 import { Injectable }                      from '@angular/core';
 import { Http, Response, URLSearchParams } from '@angular/http';
 import { Observable }                      from 'rxjs/Observable';
-import { Subject }                         from 'rxjs/Subject';
 
 import { Document }                        from './app.document';
 
@@ -60,13 +59,8 @@ export class SearchService {
         var missingIds = uncachedDocs();
         // console.log("SearchService.docs: missing ids" + missingIds);
         if (missingIds.length == 0) {
-            /* FIXME: this doesn't work
-            var subject = new Subject<Document[]>();
-            subject.next(getDocs());
-            subject.complete();
-            return subject.asObservable();
-            */
-            missingIds = [ids[0]];
+            // We can skip any http request!
+            return Observable.timer(0).map(_ => getDocs()).take(1);
         }
 
         var onDocs = function(res: Response): Document[] {
@@ -92,7 +86,7 @@ export class SearchService {
         let params: URLSearchParams = new URLSearchParams();
         params.set('ids', missingIds.join(' '));
         let http_query = '/docs?' + params.toString();
-        // console.log("SearchService.docs: " + http_query);
+        console.log("SearchService.docs: " + http_query);
 
         return this.http.get(http_query)
             .map(onDocs)
