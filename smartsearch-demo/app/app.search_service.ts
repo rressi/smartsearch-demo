@@ -14,6 +14,14 @@ export class SearchService {
 
     constructor (private http: Http) {}
 
+    /**
+     * Asynchronous method to search for documents matching the passed
+     * string.
+     *
+     * @param query query to be passed to method `/search`.
+     *
+     * @returns it asynchronously returns uuids of found documents..
+     */
     search(query: string): Observable<number[]> {
 
         var onSearch = function(res: Response): number[] {
@@ -28,6 +36,14 @@ export class SearchService {
             .catch(this.handleError);
     }
 
+    /**
+     * Asynchronous method to fetch documents with the uuid's returned
+     * by method `search`.
+     *
+     * @param ids query to be passed to method `/docs`.
+     *
+     * @returns it asynchronously returns all requested documents.
+     */
     docs(ids: number[], uuidField: string): Observable<Document[]> {
 
         var this_ = this;

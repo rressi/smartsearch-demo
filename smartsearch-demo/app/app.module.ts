@@ -5,7 +5,7 @@ import { HttpModule, JsonpModule } from '@angular/http';
 
 import { SafePipe }        from './app.safe';
 import { AppComponent }  from './app.component';
-import { SearchService }  from './app.service';
+import { SearchService }  from './app.search_service';
 
 @NgModule({
     imports: [

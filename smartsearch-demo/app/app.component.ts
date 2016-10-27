@@ -2,7 +2,7 @@ import {Component, OnInit, OnChanges, Input} from '@angular/core';
 
 import {Document}        from './app.document';
 import {Result}          from './app.result';
-import {SearchService}   from './app.service';
+import {SearchService}   from './app.search_service';
 import {URLSearchParams} from "@angular/http";
 
 @Component({
@@ -64,28 +64,36 @@ import {URLSearchParams} from "@angular/http";
 `
 })
 
+/**
+ * This is the main application's GUI component.
+ */
 export class AppComponent implements OnInit, OnChanges {
 
+    // Properties:
     query = "";
     results: Result[];
     resultsByUuid: { [id: number] : Result; };
     numResults: number;
-
     @Input() funFacts: string;
-    // @Output() funFactsChange: EventEmitter<string> = new EventEmitter();
-
     @Input() mapQuery: string;
-    // @Output() mapQueryChange: EventEmitter<string> = new EventEmitter();
 
 errorMessage: string;
 
     public constructor(private searchService: SearchService) {
-        console.log("AppComponent.constructor");
+        // console.log("AppComponent.constructor");
         this.mapQuery = this.makeMapQuery("");
         this.results = [];
         this.resultsByUuid = {}
     }
 
+    /**
+     * It is called every time the user types a key on the search box.
+     *
+     * It performes a search in 2 steps:
+     * - first let the backend doing the search with method /search
+     * - then fetches matching documents using the result of the first
+     *   query.
+     */
     public onSearch(): void {
         // console.log("AppComponent.onSearch");
 
@@ -108,6 +116,9 @@ errorMessage: string;
                 error =>  this.errorMessage = <any>error);
     }
 
+    /**
+     * Given an array of document it generates results with them.
+     */
     public setDocuments(documents: Document[]) {
         // console.log("AppComponent.onDocuments:" + documents.toString());
 
@@ -130,6 +141,11 @@ errorMessage: string;
         this.selectResult(0);
     }
 
+    /**
+     * Given one unique identifier, selects releated domcument and
+     * updates the map component in order to show the location put on
+     * the selected result.
+     */
     selectResult(uuid: number) {
 
         var result: Result;
@@ -154,6 +170,12 @@ errorMessage: string;
         }
     }
 
+    /**
+     * Generates a query for GoogleMap.
+     *
+     * @param query
+     * @returns {string}
+     */
     public makeMapQuery(query: string): string {
         let params: URLSearchParams = new URLSearchParams();
         params.set('key', "AIzaSyA2OF5dhIpaMbj6Xdv1P_iKg4WIHhaPUj0");
