@@ -66,6 +66,7 @@ export class SearchService {
         var onDocs = function(res: Response): Document[] {
 
             // Caches all the documents:
+            var numDocuments = 0
             for (let line of res.text().split("\n")) {
                 if (line.length == 0) {
                     continue;
@@ -73,11 +74,18 @@ export class SearchService {
                 var document = new Document(JSON.parse(line));
                 var uuid: number = document.data[uuidField];
                 this_.cachedDocs[uuid] = document;
+                numDocuments++;
             }
 
             missingIds = uncachedDocs();
             if (missingIds.length > 0) {
                 console.error("SearchService.docs: missing ids:", missingIds);
+            }
+
+            console.log("SearchService.docs: " + numDocuments.toString()
+                        + " documents fetched");
+            for (var k of res.headers.keys()) {
+                console.log("SearchService.docs: " + k + ": " + res.headers.get(k));
             }
 
             return getDocs();
