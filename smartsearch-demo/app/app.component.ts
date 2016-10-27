@@ -88,29 +88,30 @@ errorMessage: string;
 
     public onSearch(): void {
         // console.log("AppComponent.onSearch");
+
+        var this_ = this;
+        var onPostings = function(postings: number[]): void {
+            this_.numResults = postings.length;
+            if (postings.length == 0) {
+                this_.setDocuments([]);
+            } else {
+                this_.searchService.docs(postings, 'uuid')
+                    .subscribe(
+                        documents => this_.setDocuments(documents),
+                        error =>  this_.errorMessage = <any>error);
+            }
+        };
+
         this.searchService.search(this.query)
             .subscribe(
-                results => this.onPostings(results),
+                results => onPostings(results),
                 error =>  this.errorMessage = <any>error);
     }
 
-    public onPostings(postings: number[]): void {
-
-        this.numResults = postings.length;
-        if (postings.length == 0) {
-            this.onDocuments([])
-        }
-
-        // console.log("AppComponent.onPostings:" + postings.toString());
-        this.searchService.docs(postings)
-            .subscribe(
-                documents => this.onDocuments(documents),
-                error =>  this.errorMessage = <any>error);
-    }
-
-    public onDocuments(documents: Document[]) {
+    public setDocuments(documents: Document[]) {
         // console.log("AppComponent.onDocuments:" + documents.toString());
 
+        // Clears current results:
         while(this.results.length > 0) {
             this.results.pop()
         }
@@ -118,12 +119,14 @@ errorMessage: string;
             delete this.resultsByUuid[uuid];
         }
 
+        // Generates results from the passed documents:
         for (var document of documents) {
             var result = new Result(document.data);
             this.results.push(result);
             this.resultsByUuid[result.uuid] = result;
         }
 
+        // Un-selects results:
         this.selectResult(0);
     }
 
@@ -157,7 +160,7 @@ errorMessage: string;
         params.set('q', query + " San Fancisco California USA");
         var http_query = "https://www.google.com/maps/embed/v1/place?" +
             params.toString();
-        console.log("Map: " + http_query);
+        // console.log("Map: " + http_query);
         return http_query
     }
 
