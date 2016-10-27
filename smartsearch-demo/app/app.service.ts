@@ -94,7 +94,7 @@ export class SearchService {
         let params: URLSearchParams = new URLSearchParams();
         params.set('ids', missingIds.join(' '));
         let http_query = '/docs?' + params.toString();
-        console.log("SearchService.docs: " + http_query);
+        // console.log("SearchService.docs: " + http_query);
 
         return this.http.get(http_query)
             .map(onDocs)
