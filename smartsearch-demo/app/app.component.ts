@@ -191,10 +191,7 @@ errorMessage: string;
         this.searchService.pollCompression()
             .subscribe(
                 results => this.onSearch(),
-                error =>  function() {
-                    this.errorMessage = <any>error;
-                    this.onSearch();
-                });
+                error =>  this.errorMessage = <any>error);
     }
 
     ngOnChanges() {

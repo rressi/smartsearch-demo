@@ -6,7 +6,7 @@ import { Http, Response, URLSearchParams } from '@angular/http';
 import { Observable }                      from 'rxjs/Observable';
 
 import { Document }                        from './app.document';
-import {subscribeToResult} from "rxjs/util/subscribeToResult";
+
 
 @Injectable()
 export class SearchService {
@@ -110,10 +110,12 @@ export class SearchService {
             }
 
             console.log("SearchService.docs: " + numDocuments.toString()
-                        + " documents fetched");
+                        + " new documents fetched");
+            /*
             for (var k of res.headers.keys()) {
                 console.log("SearchService.docs: " + k + ": " + res.headers.get(k));
             }
+            */
 
             return getDocs();
         };
@@ -163,7 +165,7 @@ export class SearchService {
     private handleError (error: Response | any) {
 
         let errorMessage: string = error.toString();
-        console.log("SearchService.handleError: " + errorMessage + "");
+        console.error("SearchService.handleError: " + errorMessage + "");
 
         // In a real world app, we might use a remote logging infrastructure
         let errMsg: string;
