@@ -103,7 +103,7 @@ errorMessage: string;
             if (postings.length == 0) {
                 this_.setDocuments([]);
             } else {
-                this_.searchService.docs(postings, 'uuid')
+                this_.searchService.docs(postings, 50, 'uuid')
                     .subscribe(
                         documents => this_.setDocuments(documents),
                         error =>  this_.errorMessage = <any>error);
@@ -188,7 +188,13 @@ errorMessage: string;
 
     ngOnInit() {
         console.log("AppComponent.ngOnInit");
-        this.onSearch();
+        this.searchService.pollCompression()
+            .subscribe(
+                results => this.onSearch(),
+                error =>  function() {
+                    this.errorMessage = <any>error;
+                    this.onSearch();
+                });
     }
 
     ngOnChanges() {
